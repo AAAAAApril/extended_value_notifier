@@ -1,6 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 
+typedef VLBuilder2 = ValueListenableBuilder2;
+
 ///同时监听两个数据观察者
 class ValueListenableBuilder2<A, B> extends StatefulWidget {
   const ValueListenableBuilder2({
@@ -60,7 +62,7 @@ class _ValueListenableBuilder2State<A, B> extends State<ValueListenableBuilder2<
     final B oldB = valueB;
     valueA = widget.listenableA.value;
     valueB = widget.listenableB.value;
-    if (oldA == valueA && oldB == valueB) {
+    if ((oldA == valueA && oldB == valueB) || !mounted) {
       return;
     }
     setState(() {});
@@ -71,6 +73,8 @@ class _ValueListenableBuilder2State<A, B> extends State<ValueListenableBuilder2<
     return widget.builder.call(context, valueA, valueB, widget.child);
   }
 }
+
+typedef VLBuilder3 = ValueListenableBuilder3;
 
 ///同时监听三个数据观察者
 class ValueListenableBuilder3<A, B, C> extends StatefulWidget {
@@ -144,7 +148,7 @@ class _ValueListenableBuilder3State<A, B, C> extends State<ValueListenableBuilde
     valueA = widget.listenableA.value;
     valueB = widget.listenableB.value;
     valueC = widget.listenableC.value;
-    if (oldA == valueA && oldB == valueB && oldC == valueC) {
+    if ((oldA == valueA && oldB == valueB && oldC == valueC) || !mounted) {
       return;
     }
     setState(() {});
@@ -153,5 +157,104 @@ class _ValueListenableBuilder3State<A, B, C> extends State<ValueListenableBuilde
   @override
   Widget build(BuildContext context) {
     return widget.builder.call(context, valueA, valueB, valueC, widget.child);
+  }
+}
+
+typedef VLBuilder4 = ValueListenableBuilder4;
+
+///同时监听四个数据观察者
+class ValueListenableBuilder4<A, B, C, D> extends StatefulWidget {
+  const ValueListenableBuilder4({
+    super.key,
+    required this.listenableA,
+    required this.listenableB,
+    required this.listenableC,
+    required this.listenableD,
+    required this.builder,
+    this.child,
+  });
+
+  final ValueListenable<A> listenableA;
+  final ValueListenable<B> listenableB;
+  final ValueListenable<C> listenableC;
+  final ValueListenable<D> listenableD;
+  final Widget Function(BuildContext context, A valueA, B valueB, C valueC, D valueD, Widget? child) builder;
+  final Widget? child;
+
+  @override
+  State<ValueListenableBuilder4<A, B, C, D>> createState() => _ValueListenableBuilder4State<A, B, C, D>();
+}
+
+class _ValueListenableBuilder4State<A, B, C, D> extends State<ValueListenableBuilder4<A, B, C, D>> {
+  late A valueA;
+  late B valueB;
+  late C valueC;
+  late D valueD;
+
+  @override
+  void initState() {
+    super.initState();
+    valueA = widget.listenableA.value;
+    valueB = widget.listenableB.value;
+    valueC = widget.listenableC.value;
+    valueD = widget.listenableD.value;
+    widget.listenableA.addListener(_onValueChanged);
+    widget.listenableB.addListener(_onValueChanged);
+    widget.listenableC.addListener(_onValueChanged);
+    widget.listenableD.addListener(_onValueChanged);
+  }
+
+  @override
+  void didUpdateWidget(covariant ValueListenableBuilder4<A, B, C, D> oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.listenableA != widget.listenableA) {
+      oldWidget.listenableA.removeListener(_onValueChanged);
+      valueA = widget.listenableA.value;
+      widget.listenableA.addListener(_onValueChanged);
+    }
+    if (oldWidget.listenableB != widget.listenableB) {
+      oldWidget.listenableB.removeListener(_onValueChanged);
+      valueB = widget.listenableB.value;
+      widget.listenableB.addListener(_onValueChanged);
+    }
+    if (oldWidget.listenableC != widget.listenableC) {
+      oldWidget.listenableC.removeListener(_onValueChanged);
+      valueC = widget.listenableC.value;
+      widget.listenableC.addListener(_onValueChanged);
+    }
+    if (oldWidget.listenableD != widget.listenableD) {
+      oldWidget.listenableD.removeListener(_onValueChanged);
+      valueD = widget.listenableD.value;
+      widget.listenableD.addListener(_onValueChanged);
+    }
+  }
+
+  @override
+  void dispose() {
+    widget.listenableA.removeListener(_onValueChanged);
+    widget.listenableB.removeListener(_onValueChanged);
+    widget.listenableC.removeListener(_onValueChanged);
+    widget.listenableD.removeListener(_onValueChanged);
+    super.dispose();
+  }
+
+  void _onValueChanged() {
+    final A oldA = valueA;
+    final B oldB = valueB;
+    final C oldC = valueC;
+    final D oldD = valueD;
+    valueA = widget.listenableA.value;
+    valueB = widget.listenableB.value;
+    valueC = widget.listenableC.value;
+    valueD = widget.listenableD.value;
+    if ((oldA == valueA && oldB == valueB && oldC == valueC && oldD == valueD) || !mounted) {
+      return;
+    }
+    setState(() {});
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return widget.builder.call(context, valueA, valueB, valueC, valueD, widget.child);
   }
 }

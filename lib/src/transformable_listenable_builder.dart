@@ -1,6 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
+typedef TLBuilder = TransformableListenableBuilder;
+
 ///监听 [A] 的变化，并返回 [R]
 class TransformableListenableBuilder<A, R> extends StatefulWidget {
   const TransformableListenableBuilder({
@@ -12,7 +14,7 @@ class TransformableListenableBuilder<A, R> extends StatefulWidget {
   });
 
   final ValueListenable<A> source;
-  final R Function(A sourceValue) transformer;
+  final R Function(A value) transformer;
   final ValueWidgetBuilder<R> builder;
   final Widget? child;
 
@@ -48,7 +50,7 @@ class _TransformableListenableBuilderState<A, R> extends State<TransformableList
 
   void _onValueChanged() {
     final R newValue = widget.transformer.call(widget.source.value);
-    if (value == newValue) {
+    if (value == newValue || !mounted) {
       return;
     }
     value = newValue;
@@ -60,6 +62,8 @@ class _TransformableListenableBuilderState<A, R> extends State<TransformableList
     return widget.builder.call(context, value, widget.child);
   }
 }
+
+typedef TLBuilder2 = TransformableListenableBuilder2;
 
 ///根据两个数据观察者筛选出需要的数据
 class TransformableListenableBuilder2<A, B, R> extends StatefulWidget {
@@ -74,7 +78,7 @@ class TransformableListenableBuilder2<A, B, R> extends StatefulWidget {
 
   final ValueListenable<A> sourceA;
   final ValueListenable<B> sourceB;
-  final R Function(A sourceValueA, B sourceValueB) transformer;
+  final R Function(A valueA, B valueB) transformer;
   final ValueWidgetBuilder<R> builder;
   final Widget? child;
 
@@ -130,7 +134,7 @@ class _TransformableListenableBuilder2State<A, B, R> extends State<Transformable
       widget.sourceA.value,
       widget.sourceB.value,
     );
-    if (value == newValue) {
+    if (value == newValue || !mounted) {
       return;
     }
     value = newValue;
@@ -142,6 +146,8 @@ class _TransformableListenableBuilder2State<A, B, R> extends State<Transformable
     return widget.builder.call(context, value, widget.child);
   }
 }
+
+typedef TLBuilder3 = TransformableListenableBuilder3;
 
 ///根据三个数据观察者筛选出需要的数据
 class TransformableListenableBuilder3<A, B, C, S> extends StatefulWidget {
@@ -158,7 +164,7 @@ class TransformableListenableBuilder3<A, B, C, S> extends StatefulWidget {
   final ValueListenable<A> sourceA;
   final ValueListenable<B> sourceB;
   final ValueListenable<C> sourceC;
-  final S Function(A sourceValueA, B sourceValueB, C sourceValueC) transformer;
+  final S Function(A valueA, B valueB, C valueC) transformer;
   final ValueWidgetBuilder<S> builder;
   final Widget? child;
 
@@ -225,7 +231,7 @@ class _TransformableListenableBuilder3State<A, B, C, S> extends State<Transforma
       widget.sourceB.value,
       widget.sourceC.value,
     );
-    if (value == newValue) {
+    if (value == newValue || !mounted) {
       return;
     }
     value = newValue;
@@ -237,6 +243,8 @@ class _TransformableListenableBuilder3State<A, B, C, S> extends State<Transforma
     return widget.builder.call(context, value, widget.child);
   }
 }
+
+typedef TLBuilder4 = TransformableListenableBuilder4;
 
 ///根据四个数据观察者筛选出需要的数据
 class TransformableListenableBuilder4<A, B, C, D, S> extends StatefulWidget {
@@ -255,7 +263,7 @@ class TransformableListenableBuilder4<A, B, C, D, S> extends StatefulWidget {
   final ValueListenable<B> sourceB;
   final ValueListenable<C> sourceC;
   final ValueListenable<D> sourceD;
-  final S Function(A sourceValueA, B sourceValueB, C sourceValueC, D sourceValueD) transformer;
+  final S Function(A valueA, B valueB, C valueC, D valueD) transformer;
   final ValueWidgetBuilder<S> builder;
   final Widget? child;
 
@@ -333,7 +341,7 @@ class _TransformableListenableBuilder4State<A, B, C, D, S>
       widget.sourceC.value,
       widget.sourceD.value,
     );
-    if (value == newValue) {
+    if (value == newValue || !mounted) {
       return;
     }
     value = newValue;
@@ -349,7 +357,7 @@ class _TransformableListenableBuilder4State<A, B, C, D, S>
 extension TransformableListenableBuilderExt<T> on ValueListenable<T> {
   TransformableListenableBuilder<T, D> transformBuilder<D>({
     Key? key,
-    required D Function(T sourceValue) transformer,
+    required D Function(T value) transformer,
     required ValueWidgetBuilder<D> builder,
     Widget? child,
   }) =>
