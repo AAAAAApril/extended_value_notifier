@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-typedef TLBuilder = TransformableListenableBuilder;
+typedef TLBuilder<A, R> = TransformableListenableBuilder<A, R>;
 
 ///监听 [A] 的变化，并返回 [R]
 class TransformableListenableBuilder<A, R> extends StatefulWidget {
@@ -63,7 +63,7 @@ class _TransformableListenableBuilderState<A, R> extends State<TransformableList
   }
 }
 
-typedef TLBuilder2 = TransformableListenableBuilder2;
+typedef TLBuilder2<A, B, R> = TransformableListenableBuilder2<A, B, R>;
 
 ///根据两个数据观察者筛选出需要的数据
 class TransformableListenableBuilder2<A, B, R> extends StatefulWidget {
@@ -147,7 +147,7 @@ class _TransformableListenableBuilder2State<A, B, R> extends State<Transformable
   }
 }
 
-typedef TLBuilder3 = TransformableListenableBuilder3;
+typedef TLBuilder3<A, B, C, S> = TransformableListenableBuilder3<A, B, C, S>;
 
 ///根据三个数据观察者筛选出需要的数据
 class TransformableListenableBuilder3<A, B, C, S> extends StatefulWidget {
@@ -244,7 +244,7 @@ class _TransformableListenableBuilder3State<A, B, C, S> extends State<Transforma
   }
 }
 
-typedef TLBuilder4 = TransformableListenableBuilder4;
+typedef TLBuilder4<A, B, C, D, S> = TransformableListenableBuilder4<A, B, C, D, S>;
 
 ///根据四个数据观察者筛选出需要的数据
 class TransformableListenableBuilder4<A, B, C, D, S> extends StatefulWidget {

@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 
-typedef VLBuilder2 = ValueListenableBuilder2;
+typedef VLBuilder2<A, B> = ValueListenableBuilder2<A, B>;
 
 ///同时监听两个数据观察者
 class ValueListenableBuilder2<A, B> extends StatefulWidget {
@@ -74,7 +74,7 @@ class _ValueListenableBuilder2State<A, B> extends State<ValueListenableBuilder2<
   }
 }
 
-typedef VLBuilder3 = ValueListenableBuilder3;
+typedef VLBuilder3<A, B, C> = ValueListenableBuilder3<A, B, C>;
 
 ///同时监听三个数据观察者
 class ValueListenableBuilder3<A, B, C> extends StatefulWidget {
@@ -160,7 +160,7 @@ class _ValueListenableBuilder3State<A, B, C> extends State<ValueListenableBuilde
   }
 }
 
-typedef VLBuilder4 = ValueListenableBuilder4;
+typedef VLBuilder4<A, B, C, D> = ValueListenableBuilder4<A, B, C, D>;
 
 ///同时监听四个数据观察者
 class ValueListenableBuilder4<A, B, C, D> extends StatefulWidget {

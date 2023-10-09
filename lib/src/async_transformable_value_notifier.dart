@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 
-typedef AsyncTVNotifier = AsyncTransformableValueNotifier;
+typedef AsyncTVNotifier<T, D> = AsyncTransformableValueNotifier<T, D>;
 
 ///异步转换[T]到[D]
 class AsyncTransformableValueNotifier<T, D> extends ValueNotifier<D> {
@@ -15,12 +15,23 @@ class AsyncTransformableValueNotifier<T, D> extends ValueNotifier<D> {
 
   @override
   void dispose() {
+    disposed = true;
     source.removeListener(onSourceValueChanged);
     super.dispose();
   }
 
   final ValueListenable<T> source;
   final Future<D> Function(T value) transformer;
+
+  @protected
+  bool disposed = false;
+
+  @override
+  set value(D newValue) {
+    if (!disposed) {
+      super.value = newValue;
+    }
+  }
 
   @protected
   void onSourceValueChanged() {
@@ -35,7 +46,7 @@ class AsyncTransformableValueNotifier<T, D> extends ValueNotifier<D> {
   }
 }
 
-typedef AsyncTVNotifier2 = AsyncTransformableValueNotifier2;
+typedef AsyncTVNotifier2<A, B, R> = AsyncTransformableValueNotifier2<A, B, R>;
 
 ///异步转换[A]、[B]到[R]
 class AsyncTransformableValueNotifier2<A, B, R> extends ValueNotifier<R> {
@@ -52,6 +63,7 @@ class AsyncTransformableValueNotifier2<A, B, R> extends ValueNotifier<R> {
 
   @override
   void dispose() {
+    disposed = true;
     sourceA.removeListener(onSourceValueChanged);
     sourceB.removeListener(onSourceValueChanged);
     super.dispose();
@@ -63,6 +75,16 @@ class AsyncTransformableValueNotifier2<A, B, R> extends ValueNotifier<R> {
     A valueA,
     B valueB,
   ) transformer;
+
+  @protected
+  bool disposed = false;
+
+  @override
+  set value(R newValue) {
+    if (!disposed) {
+      super.value = newValue;
+    }
+  }
 
   @protected
   void onSourceValueChanged() {
@@ -78,7 +100,7 @@ class AsyncTransformableValueNotifier2<A, B, R> extends ValueNotifier<R> {
   }
 }
 
-typedef AsyncTVNotifier3 = AsyncTransformableValueNotifier3;
+typedef AsyncTVNotifier3<A, B, C, R> = AsyncTransformableValueNotifier3<A, B, C, R>;
 
 ///异步转换[A]、[B]、[C]到[R]
 class AsyncTransformableValueNotifier3<A, B, C, R> extends ValueNotifier<R> {
@@ -97,6 +119,7 @@ class AsyncTransformableValueNotifier3<A, B, C, R> extends ValueNotifier<R> {
 
   @override
   void dispose() {
+    disposed = true;
     sourceA.removeListener(onSourceValueChanged);
     sourceB.removeListener(onSourceValueChanged);
     sourceC.removeListener(onSourceValueChanged);
@@ -113,6 +136,16 @@ class AsyncTransformableValueNotifier3<A, B, C, R> extends ValueNotifier<R> {
   ) transformer;
 
   @protected
+  bool disposed = false;
+
+  @override
+  set value(R newValue) {
+    if (!disposed) {
+      super.value = newValue;
+    }
+  }
+
+  @protected
   void onSourceValueChanged() {
     final oldA = sourceA.value;
     final oldB = sourceB.value;
@@ -127,7 +160,7 @@ class AsyncTransformableValueNotifier3<A, B, C, R> extends ValueNotifier<R> {
   }
 }
 
-typedef AsyncTVNotifier4 = AsyncTransformableValueNotifier4;
+typedef AsyncTVNotifier4<A, B, C, D, R> = AsyncTransformableValueNotifier4<A, B, C, D, R>;
 
 ///异步转换[A]、[B]、[C]、[D]到[R]
 class AsyncTransformableValueNotifier4<A, B, C, D, R> extends ValueNotifier<R> {
@@ -148,6 +181,7 @@ class AsyncTransformableValueNotifier4<A, B, C, D, R> extends ValueNotifier<R> {
 
   @override
   void dispose() {
+    disposed = true;
     sourceA.removeListener(onSourceValueChanged);
     sourceB.removeListener(onSourceValueChanged);
     sourceC.removeListener(onSourceValueChanged);
@@ -165,6 +199,16 @@ class AsyncTransformableValueNotifier4<A, B, C, D, R> extends ValueNotifier<R> {
     C valueC,
     D valueD,
   ) transformer;
+
+  @protected
+  bool disposed = false;
+
+  @override
+  set value(R newValue) {
+    if (!disposed) {
+      super.value = newValue;
+    }
+  }
 
   @protected
   void onSourceValueChanged() {

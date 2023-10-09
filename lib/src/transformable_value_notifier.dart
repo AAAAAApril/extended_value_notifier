@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 
-typedef TVNotifier = TransformableValueNotifier;
+typedef TVNotifier<A, R> = TransformableValueNotifier<A, R>;
 
 ///监听一个监听器，得到另一个值
 class TransformableValueNotifier<A, R> extends ValueNotifier<R> {
@@ -25,7 +25,7 @@ class TransformableValueNotifier<A, R> extends ValueNotifier<R> {
   }
 }
 
-typedef TVNotifier2 = TransformableValueNotifier2;
+typedef TVNotifier2<A, B, R> = TransformableValueNotifier2<A, B, R>;
 
 ///同时监听两个监听器，并转换其值
 class TransformableValueNotifier2<A, B, R> extends ValueNotifier<R> {
@@ -57,7 +57,7 @@ class TransformableValueNotifier2<A, B, R> extends ValueNotifier<R> {
   }
 }
 
-typedef TVNotifier3 = TransformableValueNotifier3;
+typedef TVNotifier3<A, B, C, R> = TransformableValueNotifier3<A, B, C, R>;
 
 ///同时监听三个监听器，并转换其值
 class TransformableValueNotifier3<A, B, C, R> extends ValueNotifier<R> {
@@ -94,7 +94,7 @@ class TransformableValueNotifier3<A, B, C, R> extends ValueNotifier<R> {
   }
 }
 
-typedef TVNotifier4 = TransformableValueNotifier4;
+typedef TVNotifier4<A, B, C, D, R> = TransformableValueNotifier4<A, B, C, D, R>;
 
 ///同时监听四个监听器，并转换其值
 class TransformableValueNotifier4<A, B, C, D, R> extends ValueNotifier<R> {
