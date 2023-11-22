@@ -1,26 +1,29 @@
 import 'package:flutter/foundation.dart';
 
+import 'value_notifier_mixin.dart';
+
 typedef TVNotifier<A, R> = TransformableValueNotifier<A, R>;
 
 ///监听一个监听器，得到另一个值
-class TransformableValueNotifier<A, R> extends ValueNotifier<R> {
+class TransformableValueNotifier<A, R> extends ValueNotifier<R> with ValueNotifierMixin<R> {
   TransformableValueNotifier({
     required this.source,
     required this.transformer,
   }) : super(transformer(source.value)) {
-    source.addListener(_onNewValue);
+    source.addListener(onSourceValueChanged);
   }
 
   @override
   void dispose() {
-    source.removeListener(_onNewValue);
+    source.removeListener(onSourceValueChanged);
     super.dispose();
   }
 
   final ValueListenable<A> source;
   final R Function(A value) transformer;
 
-  void _onNewValue() {
+  @protected
+  void onSourceValueChanged() {
     value = transformer.call(source.value);
   }
 }
@@ -28,20 +31,18 @@ class TransformableValueNotifier<A, R> extends ValueNotifier<R> {
 typedef TVNotifier2<A, B, R> = TransformableValueNotifier2<A, B, R>;
 
 ///同时监听两个监听器，并转换其值
-class TransformableValueNotifier2<A, B, R> extends ValueNotifier<R> {
+class TransformableValueNotifier2<A, B, R> extends ValueNotifier<R> with ValueNotifierMixin<R> {
   TransformableValueNotifier2({
     required this.sourceA,
     required this.sourceB,
     required this.transformer,
   }) : super(transformer(sourceA.value, sourceB.value)) {
-    sourceA.addListener(_onNewValue);
-    sourceB.addListener(_onNewValue);
+    _listenable.addListener(onSourceValueChanged);
   }
 
   @override
   void dispose() {
-    sourceA.removeListener(_onNewValue);
-    sourceB.removeListener(_onNewValue);
+    _listenable.removeListener(onSourceValueChanged);
     super.dispose();
   }
 
@@ -49,7 +50,10 @@ class TransformableValueNotifier2<A, B, R> extends ValueNotifier<R> {
   final ValueListenable<B> sourceB;
   final R Function(A valueA, B valueB) transformer;
 
-  void _onNewValue() {
+  late final Listenable _listenable = Listenable.merge([sourceA, sourceB]);
+
+  @protected
+  void onSourceValueChanged() {
     value = transformer.call(
       sourceA.value,
       sourceB.value,
@@ -60,23 +64,19 @@ class TransformableValueNotifier2<A, B, R> extends ValueNotifier<R> {
 typedef TVNotifier3<A, B, C, R> = TransformableValueNotifier3<A, B, C, R>;
 
 ///同时监听三个监听器，并转换其值
-class TransformableValueNotifier3<A, B, C, R> extends ValueNotifier<R> {
+class TransformableValueNotifier3<A, B, C, R> extends ValueNotifier<R> with ValueNotifierMixin<R> {
   TransformableValueNotifier3({
     required this.sourceA,
     required this.sourceB,
     required this.sourceC,
     required this.transformer,
   }) : super(transformer(sourceA.value, sourceB.value, sourceC.value)) {
-    sourceA.addListener(_onNewValue);
-    sourceB.addListener(_onNewValue);
-    sourceC.addListener(_onNewValue);
+    _listenable.addListener(onSourceValueChanged);
   }
 
   @override
   void dispose() {
-    sourceA.removeListener(_onNewValue);
-    sourceB.removeListener(_onNewValue);
-    sourceC.removeListener(_onNewValue);
+    _listenable.removeListener(onSourceValueChanged);
     super.dispose();
   }
 
@@ -85,7 +85,10 @@ class TransformableValueNotifier3<A, B, C, R> extends ValueNotifier<R> {
   final ValueListenable<C> sourceC;
   final R Function(A valueA, B valueB, C valueC) transformer;
 
-  void _onNewValue() {
+  late final Listenable _listenable = Listenable.merge([sourceA, sourceB, sourceC]);
+
+  @protected
+  void onSourceValueChanged() {
     value = transformer.call(
       sourceA.value,
       sourceB.value,
@@ -97,7 +100,7 @@ class TransformableValueNotifier3<A, B, C, R> extends ValueNotifier<R> {
 typedef TVNotifier4<A, B, C, D, R> = TransformableValueNotifier4<A, B, C, D, R>;
 
 ///同时监听四个监听器，并转换其值
-class TransformableValueNotifier4<A, B, C, D, R> extends ValueNotifier<R> {
+class TransformableValueNotifier4<A, B, C, D, R> extends ValueNotifier<R> with ValueNotifierMixin<R> {
   TransformableValueNotifier4({
     required this.sourceA,
     required this.sourceB,
@@ -110,18 +113,12 @@ class TransformableValueNotifier4<A, B, C, D, R> extends ValueNotifier<R> {
           sourceC.value,
           sourceD.value,
         )) {
-    sourceA.addListener(_onNewValue);
-    sourceB.addListener(_onNewValue);
-    sourceC.addListener(_onNewValue);
-    sourceD.addListener(_onNewValue);
+    _listenable.addListener(onSourceValueChanged);
   }
 
   @override
   void dispose() {
-    sourceA.removeListener(_onNewValue);
-    sourceB.removeListener(_onNewValue);
-    sourceC.removeListener(_onNewValue);
-    sourceD.removeListener(_onNewValue);
+    _listenable.removeListener(onSourceValueChanged);
     super.dispose();
   }
 
@@ -136,23 +133,15 @@ class TransformableValueNotifier4<A, B, C, D, R> extends ValueNotifier<R> {
     D valueD,
   ) transformer;
 
-  void _onNewValue() {
+  late final Listenable _listenable = Listenable.merge([sourceA, sourceB, sourceC, sourceD]);
+
+  @protected
+  void onSourceValueChanged() {
     value = transformer.call(
       sourceA.value,
       sourceB.value,
       sourceC.value,
       sourceD.value,
-    );
-  }
-}
-
-extension TransformableValueListenableExt<T> on ValueListenable<T> {
-  ValueNotifier<D> transform<D>({
-    required D Function(T value) transformer,
-  }) {
-    return TransformableValueNotifier<T, D>(
-      source: this,
-      transformer: transformer,
     );
   }
 }
